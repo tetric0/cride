@@ -1,8 +1,9 @@
-"""."""
+"""User  model."""
 
 # Django
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 
 # Utilities
 from cride.utils.models import CRideModel
@@ -10,6 +11,8 @@ from cride.utils.models import CRideModel
 
 class User(CRideModel, AbstractUser):
     """
+    User model.
+
     Extends from Django's AbstractUser Class and changes his default USERNAME_FIELD
     option, from 'username' to 'email' attribute, adding besides some extra fields.
     """
@@ -22,13 +25,19 @@ class User(CRideModel, AbstractUser):
         }
     )
 
+    phone_regex = RegexValidator(
+        regex=r'\+?1?\d{9,15}$',
+        message='Phone number must be entered in the format: +9999999999 up to 15 digits allowed.'
+    )
+
     phone_number = models.CharField(
+        validators=[phone_regex],
         max_length=17,
         blank=True
     )
 
     is_client = models.BooleanField(
-        'client status',
+        'client',
         default=True,
         help_text=(
             'Helps to easily distinguish clients from staff in queries. '
