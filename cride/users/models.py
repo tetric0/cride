@@ -44,3 +44,11 @@ class User(CRideModel, AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS= ['username', 'first_name', 'last_name']
+
+    def __str__(self):
+        """Returns username."""
+        return self.username
+
+    def get_short_name(self):
+        """Returns username."""
+        return self.username
