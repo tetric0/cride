@@ -2,10 +2,14 @@
 
 # Django REST Framework
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
+
+# Models
+from cride.circles.models import Circle
 
 
 class CircleSerializer(serializers.Serializer):
-    """Circle Serializer."""
+    """Circles List Serializer."""
 
     name = serializers.CharField()
     slug_name= serializers.SlugField()
@@ -14,11 +18,20 @@ class CircleSerializer(serializers.Serializer):
     members_limit = serializers.IntegerField()
 
 class CreateCircleSerializer(serializers.Serializer):
-    """Create a Circle Serializer."""
+    """Circle Creation Serializer."""
 
     name = serializers.CharField(max_length=140)
-    slug_name = serializers.CharField(max_length=40)
+    slug_name = serializers.CharField(
+        max_length=40,
+        validators=[
+            UniqueValidator(queryset=Circle.objects.all())
+        ]
+    )
     about = serializers.CharField(
         max_length=255,
         required=False
     )
+
+    def create(self, data):
+        """Create Circle."""
+        return Circle.objects.create(**data)
