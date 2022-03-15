@@ -15,11 +15,8 @@ from cride.circles.serializers import CircleSerializer
 def list_circles(request):
     """Lists Circles."""
     circles = Circle.objects.filter(is_public=True)
-    data = []
-    for circle in circles:
-        serialized_circle = CircleSerializer(circle)
-        data.append(serialized_circle.data)
-    return Response(data)
+    serializer = CircleSerializer(circles, many=True)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def create_circle(request):
