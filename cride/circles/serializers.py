@@ -12,3 +12,13 @@ class CircleSerializer(serializers.Serializer):
     rides_taken = serializers.IntegerField()
     rides_offered = serializers.IntegerField()
     members_limit = serializers.IntegerField()
+
+class CreateCircleSerializer(serializers.Serializer):
+    """Create a Circle Serializer."""
+
+    name = serializers.CharField(max_length=140)
+    slug_name = serializers.CharField(max_length=40)
+    about = serializers.CharField(
+        max_length=255,
+        required=False
+    )
